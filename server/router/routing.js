@@ -37,7 +37,28 @@ router.post("/register", async (req, res) => {
     } catch (error) {
         res.status(400).json({error : error._message});
         console.log("catched error => ", error._message);
-        
+    }
+});
+
+router.post("/signin", async (req, res) => {
+    try {
+        const {email, password} = req.body;
+
+        if (!email || !password){
+            return res.status(422).json({error : "All fields are required"});
+        }
+
+        const findEmail = await User.findOne({email : email});
+        if (!findEmail || findEmail.password !== password){
+            return res.status(400).json({error : "Invalid details"});
+        }
+
+        res.status(200).json({message : "User logged in",
+    data : findEmail});
+
+    } catch (error) {
+        res.status(400).json({error : error._message});
+        console.log("catched error => ", error._message);
     }
 });
 
