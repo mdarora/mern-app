@@ -38,7 +38,7 @@ router.post("/register", async (req, res) => {
         });
         
         const result = await newUser.save();
-        res.status(201).json({ message : "Registered successfully", result});
+        res.status(201).json({ message : "Registered successfully", data : result});
 
     } catch (error) {
         res.status(400).json({error : error._message});
@@ -55,15 +55,18 @@ router.post("/signin", async (req, res) => {
         }
 
         const findByEmail = await User.findOne({email : email});
+        if (!findByEmail){
+            return res.status(400).json({error : "Invalid details"});
+        }
         const matchHash = await bcrypt.compare(password, findByEmail.password);
-        if (!findByEmail || !matchHash){
+        if (!matchHash){
             return res.status(400).json({error : "Invalid details"});
         }
         res.status(200).json({message : "User logged in", data : findByEmail});
 
     } catch (error) {
-        res.status(400).json({error : error._message});
-        console.log("catched error => ", error._message);
+        res.status(400).json({error});
+        console.log("catched error => ", error);
     }
 });
 
