@@ -2,10 +2,14 @@ import React from 'react'
 
 const Home = () => {
     return (
-        <div className="text-center">
+    <>
+    <section className="home">
+        <div className="home-text">
             <p>Welcome</p>
-            <h1>Home page</h1>
+            <h2>We are the MERN developer</h2>
         </div>
+    </section>
+    </>
     )
 }
 

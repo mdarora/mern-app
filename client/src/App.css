@@ -29,6 +29,20 @@ section {
   align-items: center;
   padding: 70px 0px 10px 0px;
 }
+/* ************************************* */
+
+section.home{
+  text-align: center;
+  justify-content: center;
+  background-image: url(./images/home-background.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+section.home p{
+  font-weight: 500;
+  color: var(--theme-color);
+}
 
 /* ************************************* */
 .reg-box, .login-box, .contact-form-box{
@@ -154,5 +168,14 @@ section {
   }
   .contact-form-box .inputs{
     margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 400px){
+  section.home p{
+    font-size: 14px;
+  }
+  section.home h2{
+    font-size: 20px;
   }
 }
