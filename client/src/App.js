@@ -7,6 +7,7 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import ErrorPage from "./components/404";
 import "./App.css";
 
 const App = () => {
@@ -32,6 +33,10 @@ const App = () => {
 
       <Route path="/register">
         <Register></Register>
+      </Route>
+
+      <Route>
+        <ErrorPage></ErrorPage>
       </Route>
     </>
   )

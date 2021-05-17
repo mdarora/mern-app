@@ -45,7 +45,7 @@ section.home p{
 }
 
 /* ************************************* */
-.reg-box, .login-box, .contact-form-box, .profile-box{
+.reg-box, .login-box, .contact-form-box, .profile-box, .error-box{
   width: 700px;
   max-width: 99%;
   margin: 0px auto;
@@ -84,16 +84,17 @@ section.home p{
 .form-btn {
   margin-top: 32px;
 }
-.form-btn button{
+.form-btn button, .back-btn a{
   color: #fff;
   font-size: 14px;
   padding: 8px 24px;
   border:none;
   border-radius: 5px;
   transition: all .3s;
+  text-decoration: none;
   background-color: var(--theme-color);
 }
-.form-btn button:hover{
+.form-btn button:hover, .back-btn a:hover{
   filter: brightness(90%);
 }
 .register-side-img, .login-side-img{
@@ -218,6 +219,18 @@ section.home p{
   outline: none;
   width: 50%;
   color: var(--theme-color);
+}
+
+/* ************************************ */
+.error-img{
+  margin-bottom: 16px;
+}
+.error-img img{
+  width: 100%;
+  max-width: 450px;
+}
+.error-text p{
+  font-size: 14px;
 }
 
 
