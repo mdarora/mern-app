@@ -1,9 +1,59 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {useState} from 'react';
+import {Link, useHistory} from "react-router-dom";
 import InputField from "./InputField";
 import regSvg from "../images/register.svg";
 
 const Register = () => {
+
+    const history = useHistory();
+
+    const [user, setUser] = useState({
+        name:"", email:"", phone:"", work:"", gender:"gender", password:"", cpassword:""
+    });
+    const [resultMsg, setresultMsg] = useState("");
+
+    const handleInputs = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setUser({...user, [name] : value});
+    }
+
+    const registerUser = async (e) => {
+        console.log('Submiting...');
+        e.preventDefault();
+
+        const {name, email, phone, work, gender, password, cpassword} = user;
+        
+        try {
+            const res = await fetch("http://localhost:5000/register", {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify({name, email, phone, work, gender, password, cpassword}),
+            });
+            
+            const result = await res.json();
+
+            if(result.message){
+                setresultMsg(result.message);
+                document.getElementById("result-msg").classList.add("text-success");
+                document.getElementById("result-msg").classList.remove("text-danger");
+                setTimeout(() =>{
+                    history.push("/login");
+                }, 2000);
+            } else {
+                setresultMsg(result.error);
+                document.getElementById("result-msg").classList.remove("text-success");
+                document.getElementById("result-msg").classList.add("text-danger");
+            }
+            console.log("Result", result);
+            
+        } catch (error) {
+            console.log("catched error : ", error);
+        }
+    };
+
     return (
     <>
         <section className="register">
@@ -13,20 +63,20 @@ const Register = () => {
                         <div className="col-sm-6">
                             <div className="reg-form-area">
                                 <h4>Register</h4>
-                                <form className="reg-form">
-                                    <InputField id="name" type="text" icon="bi bi-person-fill" place="Your Name" />
+                                <form method="POST" onSubmit={registerUser} className="reg-form">
+                                    <InputField name="name" id="name" type="text" icon="bi bi-person-fill" change={handleInputs} value={user.name} place="Your Name" />
 
-                                    <InputField id="email" type="email" icon="bi bi-envelope-fill" place="Your E-mail" />
+                                    <InputField name="email" id="email" type="email" icon="bi bi-envelope-fill" change={handleInputs} value={user.email} place="Your E-mail" />
 
-                                    <InputField id="number" type="number" icon="bi bi-phone-fill" place="Mobile Number" />
+                                    <InputField name="phone" id="number" type="number" icon="bi bi-phone-fill" change={handleInputs} value={user.number} place="Mobile Number" />
 
-                                    <InputField id="work" type="text" icon="bi bi-briefcase-fill" place="Your Profession" />
+                                    <InputField name="work" id="work" type="text" icon="bi bi-briefcase-fill" change={handleInputs} value={user.work} place="Your Profession" />
 
                                     <div className="field">
                                         <label htmlFor="gender">
                                             <i className="bi bi-gender-ambiguous"></i>
                                         </label>
-                                        <select name="gender" id="gender" autoComplete="off" defaultValue="gender" required>
+                                        <select name="gender" id="gender" onChange={handleInputs} value={user.gender} required>
                                             <option value="gender" disabled>Gender</option>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
@@ -34,9 +84,11 @@ const Register = () => {
                                         </select>
                                     </div>
                                     
-                                    <InputField id="password" type="password" icon="bi bi-lock-fill" place="Your password" />
+                                    <InputField name="password" id="password" type="password" icon="bi bi-lock-fill" change={handleInputs} value={user.password} place="Your password" />
                                     
-                                    <InputField id="cpassword" type="password" icon="bi bi-lock-fill" place="Confirm your password" />
+                                    <InputField name="cpassword" id="cpassword" type="password" icon="bi bi-lock-fill" change={handleInputs} value={user.cpassword} place="Confirm your password" />
+
+                                    <p id="result-msg" className="text-success">{resultMsg}</p>
 
                                     <div className="form-btn">
                                         <button type="submit">Register</button>

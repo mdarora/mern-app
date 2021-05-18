@@ -3,6 +3,34 @@ import {Link} from "react-router-dom";
 import InputField from "./InputField";
 import loginSvg from "../images/login.svg"
 
+
+const userLogin = async (e) =>{
+    e.preventDefault();
+    try {
+        const response = await fetch("http://localhost:5000/signin",{
+            crossDomain:true,
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify({
+                "email" : "mdarora@md.com",
+                "password" : "1213141516",
+            }),
+        });
+
+        console.log(response);
+        const data = await response.json();
+        console.log(data, data.status);
+        
+        
+    } catch (error) {
+        console.log('Catched error : ', error);
+        
+    }
+};
+
+
 const Login = () => {
     return (
         <>
@@ -30,7 +58,7 @@ const Login = () => {
                                     <InputField id="password" type="password" icon="bi bi-lock-fill" place="Your password" />
 
                                     <div className="form-btn">
-                                        <button type="submit">Login</button>
+                                        <button onClick={userLogin}>Login</button>
                                     </div>
                                 </form>
                             </div>

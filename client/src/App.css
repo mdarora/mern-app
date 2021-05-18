@@ -111,6 +111,11 @@ section.home p{
   font-size: 12px;
 }
 
+#result-msg{
+  font-weight: 500;
+  font-size: 12px;
+  text-align: center;
+}
 /* *************************************************** */
 
 .contact-info-box{

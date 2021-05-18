@@ -6,15 +6,15 @@ require("../db/dbConn");
 const User = require("../db/models/userSchema");
 
 router.get("/", (req, res) => {
-    res.status(200).send("<h1>Welcome to router page of server</h1>");
+    res.status(200).json({message: "this is the home route of server"});
 });
 
 router.post("/register", async (req, res) => {
     try {
         const {name, email, phone, gender, work, password, cpassword} = req.body;
-
+        
         if (!name || !email || !phone || !gender || !work || !password || !cpassword) {
-            return res.status(422).json({error : "All feilds are required"});
+            return res.status(422).json({error : "All fields are required"});
         } else if (password !== cpassword){
             return res.status(422).json({error : "Both passwords must be same"})
         }
@@ -41,13 +41,14 @@ router.post("/register", async (req, res) => {
         res.status(201).json({ message : "Registered successfully", data : result});
 
     } catch (error) {
-        res.status(400).json({error : error._message});
-        console.log("catched error => ", error._message);
+        res.status(400).send(error);
+        console.log("catched error => ", error);
     }
 });
 
 router.post("/signin", async (req, res) => {
     try {
+        console.log(req.body);
         const {email, password} = req.body;
 
         if (!email || !password){
