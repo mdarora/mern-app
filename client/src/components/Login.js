@@ -1,37 +1,57 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {useState} from 'react';
+import {Link, useHistory} from "react-router-dom";
 import InputField from "./InputField";
 import loginSvg from "../images/login.svg"
 
 
-const userLogin = async (e) =>{
-    e.preventDefault();
-    try {
-        const response = await fetch("http://localhost:5000/signin",{
-            crossDomain:true,
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body : JSON.stringify({
-                "email" : "mdarora@md.com",
-                "password" : "1213141516",
-            }),
-        });
-
-        console.log(response);
-        const data = await response.json();
-        console.log(data, data.status);
-        
-        
-    } catch (error) {
-        console.log('Catched error : ', error);
-        
-    }
-};
-
-
 const Login = () => {
+
+    const history = useHistory();
+
+    const [Luser, setLUser] = useState({
+        email:"", password:""
+    });
+    const [resultMsg, setresultMsg] = useState("");
+
+
+    const handleLogin = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+
+        setLUser({...Luser, [name] : value});
+    }
+
+    const loginUser = async (e) =>{
+        e.preventDefault();
+        const {email, password} = Luser;
+        try {
+            const response = await fetch("http://localhost:5000/signin",{
+                crossDomain:true,
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify({ email, password}),
+            });
+    
+            const result = await response.json();
+
+            if(result.message){
+                history.push("/");
+            } else {
+                setresultMsg(result.error);
+                document.getElementById("result-msg").classList.remove("text-success");
+                document.getElementById("result-msg").classList.add("text-danger");
+            }
+            
+            
+        } catch (error) {
+            console.log('Catched error : ', error);
+            
+        }
+    };
+
+
     return (
         <>
         <section className="login">
@@ -51,14 +71,16 @@ const Login = () => {
                         <div className="col-sm-6">
                             <div className="login-form-area">
                                 <h4>Login</h4>
-                                <form className="login-form">
+                                <form onSubmit={loginUser} className="login-form">
 
-                                    <InputField id="email" type="email" icon="bi bi-envelope-fill" place="Your E-mail" />
+                                    <InputField id="email" name="email" type="email" icon="bi bi-envelope-fill" change={handleLogin} value={Luser.email} place="Your E-mail" />
                                     
-                                    <InputField id="password" type="password" icon="bi bi-lock-fill" place="Your password" />
+                                    <InputField id="password" name="password" type="password" icon="bi bi-lock-fill" change={handleLogin} value={Luser.password} place="Your password" />
+
+                                    <p id="result-msg" className="text-success">{resultMsg}</p>
 
                                     <div className="form-btn">
-                                        <button onClick={userLogin}>Login</button>
+                                        <button type="submit">Login</button>
                                     </div>
                                 </form>
                             </div>

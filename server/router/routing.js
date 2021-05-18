@@ -38,7 +38,7 @@ router.post("/register", async (req, res) => {
         });
         
         const result = await newUser.save();
-        res.status(201).json({ message : "Registered successfully", data : result});
+        res.status(201).json({ message : "Registered successfully"});
 
     } catch (error) {
         res.status(400).send(error);
@@ -48,7 +48,6 @@ router.post("/register", async (req, res) => {
 
 router.post("/signin", async (req, res) => {
     try {
-        console.log(req.body);
         const {email, password} = req.body;
 
         if (!email || !password){
@@ -63,7 +62,7 @@ router.post("/signin", async (req, res) => {
         if (!matchHash){
             return res.status(400).json({error : "Invalid details"});
         }
-        res.status(200).json({message : "User logged in", data : findByEmail});
+        res.status(200).json({message : "User logged in"});
 
     } catch (error) {
         res.status(400).json({error});
