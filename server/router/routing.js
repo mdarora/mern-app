@@ -1,12 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const auth = require("../middleWare/auth");
 
 require("../db/dbConn");
 const User = require("../db/models/userSchema");
 
-router.get("/", (req, res) => {
-    res.status(200).json({message: "this is the home route of server"});
+router.get("/about", auth, async (req, res) => {
+    try {
+        const findById = await User.findOne({_id:req.id}, {password: 0, cpassword : 0});
+        res.status(200).json({user : findById})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error : "Something is wrong!"});
+    }
 });
 
 router.post("/register", async (req, res) => {
@@ -54,7 +62,7 @@ router.post("/signin", async (req, res) => {
             return res.status(422).json({error : "All fields are required"});
         }
 
-        const findByEmail = await User.findOne({email : email});
+        const findByEmail = await User.findOne({email : email}, {password: 1});
         if (!findByEmail){
             return res.status(400).json({error : "Invalid details"});
         }
@@ -62,10 +70,13 @@ router.post("/signin", async (req, res) => {
         if (!matchHash){
             return res.status(400).json({error : "Invalid details"});
         }
-        res.status(200).json({message : "User logged in"});
+
+        const token = jwt.sign({id : findByEmail._id}, process.env.SECRET_KEY);
+        res.cookie("token", token);
+        res.status(200).json({message : "Logged in"});
 
     } catch (error) {
-        res.status(400).json({error});
+        res.status(400).json({catchedError : error});
         console.log("catched error => ", error);
     }
 });
