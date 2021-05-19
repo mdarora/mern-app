@@ -17,6 +17,16 @@ router.get("/about", auth, async (req, res) => {
     }
 });
 
+router.get("/getdata", auth, async (req, res) => {
+    try {
+        const findById = await User.findOne({_id:req.id}, {name: 1, email : 1, phone : 1});
+        res.status(200).json({user : findById})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error : "Something is wrong!"});
+    }
+});
+
 router.post("/register", async (req, res) => {
     try {
         const {name, email, phone, gender, work, password, cpassword} = req.body;

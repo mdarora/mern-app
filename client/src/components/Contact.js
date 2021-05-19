@@ -1,7 +1,41 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+// import {useHistory} from "react-router-dom";
 import ContactInfoBox from "./ContactInfoBox";
 
 const Contact = () => {
+    // const history = useHistory();
+
+    const [user, setUser] = useState({});
+
+    const getData = async () =>{
+        try {
+            const response = await fetch("http://localhost:5000/getdata",{
+                method : "GET",
+                headers: {
+                    // Accept : "application/json",
+                    "Content-Type" : "application/json"
+                },
+                credentials: 'include',
+            });
+
+            const result = await response.json();
+
+            if (result.error){
+                // history.push("/login");
+                return;
+            } else if (result.user){
+                setUser(result.user);
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    useEffect(()=>{
+        getData();
+    },[]);
+
     return (
     <>
     <section className="contact">
@@ -28,13 +62,13 @@ const Contact = () => {
                     <form className="contact-form">
                         <div className="row">
                             <div className="col-sm-4 inputs">
-                                <input type="text" placeholder="Your name" className="form-control" />
+                                <input type="text" value={user.name} placeholder="Your name" className="form-control" />
                             </div>
                             <div className="col-sm-4 inputs">
-                                <input type="email" placeholder="Your email" className="form-control" />
+                                <input type="email" value={user.email} placeholder="Your email" className="form-control" />
                             </div>
                             <div className="col-sm-4 inputs">
-                                <input type="number" placeholder="Mobile number" className="form-control" />
+                                <input type="number" value={user.phone} placeholder="Mobile number" className="form-control" />
                             </div>
                             <div className="col-12 mt-4">
                                 <textarea className="form-control" name="message" id="message" placeholder="Message"></textarea>
