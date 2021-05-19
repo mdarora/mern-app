@@ -26,8 +26,8 @@ const Login = () => {
         const {email, password} = Luser;
         try {
             const response = await fetch("http://localhost:5000/signin",{
-                crossDomain:true,
                 method : "POST",
+                credentials: 'include',
                 headers : {
                     "Content-Type" : "application/json"
                 },
@@ -35,11 +35,16 @@ const Login = () => {
             });
     
             const result = await response.json();
-
+            
             if(result.message){
                 history.push("/");
-            } else {
+            } else if (result.error) {
                 setresultMsg(result.error);
+                document.getElementById("result-msg").classList.remove("text-success");
+                document.getElementById("result-msg").classList.add("text-danger");
+            }
+            else {
+                setresultMsg("Something went wrong!");
                 document.getElementById("result-msg").classList.remove("text-success");
                 document.getElementById("result-msg").classList.add("text-danger");
             }
@@ -47,7 +52,9 @@ const Login = () => {
             
         } catch (error) {
             console.log('Catched error : ', error);
-            
+            setresultMsg("Something went wrong!");
+                document.getElementById("result-msg").classList.remove("text-success");
+                document.getElementById("result-msg").classList.add("text-danger");
         }
     };
 
