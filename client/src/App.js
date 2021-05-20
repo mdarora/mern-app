@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Route, Switch} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Navbar from "./components/Navbar";
@@ -8,12 +8,16 @@ import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ErrorPage from "./components/404";
+import Logout from "./components/Logout";
 import "./App.css";
 
 const App = () => {
+
+  const [isLoggedin, setIsLoggedin] = useState(false)
+
   return (
     <>
-      <Navbar/>
+      <Navbar isLoggedin={isLoggedin}/>
     <Switch>
       <Route exact path="/">
         <Home></Home>
@@ -27,12 +31,16 @@ const App = () => {
         <Contact></Contact>
       </Route>
 
-      <Route path="/login">
-        <Login></Login>
-      </Route>
-
       <Route path="/register">
         <Register></Register>
+      </Route>
+
+      <Route path="/login">
+        <Login setIsLoggedin={setIsLoggedin} ></Login>
+      </Route>
+
+      <Route path="/logout">
+        <Logout setIsLoggedin={setIsLoggedin}></Logout>
       </Route>
 
       <Route>

@@ -39,6 +39,9 @@ const Contact = () => {
             console.log(error);
         }
     }
+    useEffect(()=>{
+        getData();
+    },[]);
 
     const sendMessage = async (e) =>{
         e.preventDefault();
@@ -67,10 +70,6 @@ const Contact = () => {
             console.log(error);
         }
     }
-
-    useEffect(()=>{
-        getData();
-    },[]);
 
     return (
     <>

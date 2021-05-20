@@ -117,4 +117,9 @@ router.post("/contact", async (req, res) =>{
 });
 
 
+router.get("/logout", (req, res) => {
+    res.clearCookie("token").status(200).json({message:"logged out"});
+});
+
+
 module.exports = router;

@@ -4,7 +4,7 @@ import InputField from "./InputField";
 import loginSvg from "../images/login.svg"
 
 
-const Login = () => {
+const Login = ({setIsLoggedin}) => {
 
     const history = useHistory();
 
@@ -37,6 +37,7 @@ const Login = () => {
             const result = await response.json();
             
             if(result.message){
+                setIsLoggedin(true);
                 history.push("/");
             } else if (result.error) {
                 setresultMsg(result.error);
