@@ -6,6 +6,7 @@ const auth = require("../middleWare/auth");
 
 require("../db/dbConn");
 const User = require("../db/models/userSchema");
+const Message = require("../db/models/messegesSchema");
 
 router.get("/about", auth, async (req, res) => {
     try {
@@ -88,6 +89,30 @@ router.post("/signin", async (req, res) => {
     } catch (error) {
         res.status(400).json({catchedError : error});
         console.log("catched error => ", error);
+    }
+});
+
+router.post("/contact", async (req, res) =>{
+    try {
+        const {id, name, email, phone, message} = req.body;
+        
+        if (!name || !email || !phone || !message){
+            return res.status(422).json({error:"All fields are required!"});
+        }
+
+        const newMessage = new Message({
+            userId:id, name, email, phone, message
+        });
+        const result = await newMessage.save();
+        if (result._id){
+            return res.status(201).json({message:"Message sent"});
+        } else{
+            res.status(500).json({error:"Something is wrong!"});
+        }
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error:"Something is wrong!"});
     }
 });
 

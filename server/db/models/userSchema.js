@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
     cpassword : {
         type : String,
         required : true
+    },
+    dateJoined: {
+        type : Date,
+        default : Date.now()
     }
 });
 
