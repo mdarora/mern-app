@@ -17,7 +17,7 @@ const Navbar = ({isLoggedin}) => {
                     <NavLink className="nav-link" to="/contact">Contact</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink className="nav-link" to="/logout">Logout</NavLink>
+                    <NavLink className="nav-link nav-logout-btn" to="/logout">Logout</NavLink>
                 </li>
             </>
             )
