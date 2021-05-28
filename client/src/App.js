@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Route, Switch} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Navbar from "./components/Navbar";
@@ -12,8 +12,16 @@ import Logout from "./components/Logout";
 import "./App.css";
 
 const App = () => {
+  const [isLoggedin, setIsLoggedin] = useState(false);
 
-  const [isLoggedin, setIsLoggedin] = useState(false)
+  useEffect(()=>{
+    let cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    if(cookieValue){
+      setIsLoggedin(true);
+    }
+  }, []);
+
+
 
   return (
     <>
