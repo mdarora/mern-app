@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {Link, useHistory} from "react-router-dom";
 import InputField from "./InputField";
-import loginSvg from "../images/login.svg"
+import loginSvg from "../images/login.svg";
+import loader from "../images/Spinner-1s-200px.svg";
 
 
 const Login = ({setIsLoggedin}) => {
@@ -23,8 +24,11 @@ const Login = ({setIsLoggedin}) => {
 
     const loginUser = async (e) =>{
         e.preventDefault();
+        const loginLoader = document.getElementById("login-loader");
         const {email, password} = Luser;
         try {
+            setresultMsg("");
+            loginLoader.hidden = false;
             const response = await fetch("http://localhost:5000/signin",{
                 method : "POST",
                 credentials: 'include',
@@ -40,11 +44,13 @@ const Login = ({setIsLoggedin}) => {
                 setIsLoggedin(true);
                 history.push("/");
             } else if (result.error) {
+                loginLoader.hidden = true;
                 setresultMsg(result.error);
                 document.getElementById("result-msg").classList.remove("text-success");
                 document.getElementById("result-msg").classList.add("text-danger");
             }
             else {
+                loginLoader.hidden = true;
                 setresultMsg("Something went wrong!");
                 document.getElementById("result-msg").classList.remove("text-success");
                 document.getElementById("result-msg").classList.add("text-danger");
@@ -53,9 +59,10 @@ const Login = ({setIsLoggedin}) => {
             
         } catch (error) {
             console.log('Catched error : ', error);
+            loginLoader.hidden = true;
             setresultMsg("Something went wrong!");
-                document.getElementById("result-msg").classList.remove("text-success");
-                document.getElementById("result-msg").classList.add("text-danger");
+            document.getElementById("result-msg").classList.remove("text-success");
+            document.getElementById("result-msg").classList.add("text-danger");
         }
     };
 
@@ -85,7 +92,9 @@ const Login = ({setIsLoggedin}) => {
                                     
                                     <InputField id="password" name="password" type="password" icon="bi bi-lock-fill" change={handleLogin} value={Luser.password} place="Your password" />
 
-                                    <p id="result-msg" className="text-success">{resultMsg}</p>
+                                    <p id="result-msg" className="text-success">{resultMsg}
+                                        <img src={loader} alt="Loading" width="30" id="login-loader" hidden/>
+                                    </p>
 
                                     <div className="form-btn">
                                         <button type="submit">Login</button>

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Link, useHistory} from "react-router-dom";
 import InputField from "./InputField";
 import regSvg from "../images/register.svg";
+import loader from "../images/Spinner-1s-200px.svg";
 
 const Register = () => {
 
@@ -19,12 +20,13 @@ const Register = () => {
     }
 
     const registerUser = async (e) => {
-        console.log('Submiting...');
         e.preventDefault();
-
+        const registerLoader = document.getElementById("register-loader");
         const {name, email, phone, work, gender, password, cpassword} = user;
         
         try {
+            setresultMsg("");
+            registerLoader.hidden = false;
             const res = await fetch("http://localhost:5000/register", {
                 method : "POST",
                 headers : {
@@ -36,6 +38,7 @@ const Register = () => {
             const result = await res.json();
 
             if(result.message){
+                registerLoader.hidden = true;
                 setresultMsg(result.message);
                 document.getElementById("result-msg").classList.add("text-success");
                 document.getElementById("result-msg").classList.remove("text-danger");
@@ -43,6 +46,7 @@ const Register = () => {
                     history.push("/login");
                 }, 2000);
             } else {
+                registerLoader.hidden = true;
                 setresultMsg(result.error);
                 document.getElementById("result-msg").classList.remove("text-success");
                 document.getElementById("result-msg").classList.add("text-danger");
@@ -50,7 +54,10 @@ const Register = () => {
             console.log("Result", result);
             
         } catch (error) {
-            console.log("catched error : ", error);
+            registerLoader.hidden = true;
+            setresultMsg("Something went wrong !");
+            document.getElementById("result-msg").classList.remove("text-success");
+            document.getElementById("result-msg").classList.add("text-danger");
         }
     };
 
@@ -88,7 +95,9 @@ const Register = () => {
                                     
                                     <InputField name="cpassword" id="cpassword" type="password" icon="bi bi-lock-fill" change={handleInputs} value={user.cpassword} place="Confirm your password" />
 
-                                    <p id="result-msg" className="text-success">{resultMsg}</p>
+                                    <p id="result-msg" className="text-success">{resultMsg}
+                                        <img src={loader} alt="Loading" width="30" id="register-loader" hidden/>
+                                    </p>
 
                                     <div className="form-btn">
                                         <button type="submit">Register</button>

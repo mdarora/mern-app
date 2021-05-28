@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import ContactInfoBox from "./ContactInfoBox";
+import loader from "../images/Spinner-1s-200px.svg";
+
 
 const Contact = () => {
     const history = useHistory();
@@ -17,6 +19,7 @@ const Contact = () => {
 
     const getData = async () =>{
         try {
+            
             const response = await fetch("http://localhost:5000/getdata",{
                 method : "GET",
                 headers: {
@@ -45,7 +48,10 @@ const Contact = () => {
 
     const sendMessage = async (e) =>{
         e.preventDefault();
+        const contactLoader = document.getElementById("contact-loader");
         try {
+            setmessageResult("");
+            contactLoader.hidden = false;
             const response = await fetch("http://localhost:5000/contact",{
                 method:"POST",
                 headers:{
@@ -57,16 +63,22 @@ const Contact = () => {
             });
             const result = await response.json();
             if(result.message){
+                contactLoader.hidden = true;
                 setmessageResult(result.message);
                 setMessage("");
                 document.getElementById("result-msg").classList.add("text-success");
                 document.getElementById("result-msg").classList.remove("text-danger");
             } else if (result.error) {
+                contactLoader.hidden = true;
                 setmessageResult(result.error);
                 document.getElementById("result-msg").classList.remove("text-success");
                 document.getElementById("result-msg").classList.add("text-danger");
             }
         } catch (error) {
+            contactLoader.hidden = true;
+            setmessageResult("Something went wrong!");
+            document.getElementById("result-msg").classList.remove("text-success");
+            document.getElementById("result-msg").classList.add("text-danger");
             console.log(error);
         }
     }
@@ -109,7 +121,9 @@ const Contact = () => {
                                 <textarea className="form-control" name="message" id="message" placeholder="Message" value={message} onChange={handleMessage}></textarea>
                             </div>
                         </div>
-                        <p id="result-msg" className="text-center mb-0 mt-3">{messageResult}</p>
+                        <p id="result-msg" className="text-center mb-0 mt-3">{messageResult}
+                            <img src={loader} alt="Loading" width="30" id="contact-loader" hidden/>
+                        </p>
                         <div className="form-btn">
                             <button type="submit">Send Message</button>
                         </div>
