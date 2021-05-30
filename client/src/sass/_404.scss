@@ -1,0 +1,18 @@
+.error-box {
+    @extend .reg-box;
+  }
+  .error-img{
+    margin-bottom: 16px;
+    
+    img{
+      width: 100%;
+      max-width: 450px;
+    }
+  }
+  .error-text p{
+    font-size: 14px;
+  }
+  .back-btn a{
+    @include button;
+  }
+  

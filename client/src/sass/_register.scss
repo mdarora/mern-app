@@ -1,0 +1,65 @@
+.reg-box{
+  @include pageBox;
+
+  h4{
+    font-weight: bold;
+    margin-bottom: 28px;
+  }
+}
+
+.field{
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid black;
+  
+  label{
+    font-size: 14px;
+    margin-right: 8px;
+  }
+  
+  input, select{
+    border: none;
+    width: 100%;
+    font-size: 12px;
+    background-color: transparent;
+
+    &:focus{
+      outline: none;
+    }
+  }
+  select {
+    &:focus-visible{
+      outline: none;
+    }
+  }
+}
+
+
+.form-btn {
+  margin-top: 32px;
+}
+.form-btn button{
+  @include button;
+}
+
+.register-side-img{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  img{
+    width: 100%;
+  }
+  p{
+    font-size: 12px;
+  }
+}
+
+#result-msg{
+  font-weight: 500;
+  font-size: 12px;
+  text-align: center;
+}

@@ -1,0 +1,13 @@
+section.home{
+    text-align: center;
+    justify-content: center;
+    background-image: url(../images/home-background.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    p{
+        font-weight: 500;
+        color: var(--theme-color);
+    }
+  }

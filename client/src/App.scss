@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
+
+:root{
+  --theme-color : #2292E9;
+}
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
+@import "./sass/_mixins.scss";
+
+body{
+  background-color: whitesmoke;
+}
+nav{
+  border-bottom: 1px solid var(--theme-color);
+}
+.navbar-light .navbar-nav .nav-link{
+  font-size: 14px;
+  font-weight: 500;
+}
+.navbar-light .navbar-nav{
+  .nav-link{
+    &:hover, &:focus, &.active{
+      color: var(--theme-color);
+    }
+  }
+  .show > .nav-link{
+    color: var(--theme-color);
+  }
+}
+
+.nav-logout-btn {
+  @include button;
+}
+.back-logo{
+  color: var(--theme-color);
+}
+section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 70px 0px 10px 0px;
+}
+
+/* ************************************* */
+
+@import "./sass/home";
+@import "./sass/register";
+@import "./sass/contact";
+@import "./sass/about";
+@import "./sass/404";
+
+.login-box{
+  @extend .reg-box;
+  padding: 60px 25px;
+}
+.login-side-img {
+  @extend .register-side-img
+};
+
+/* ****************************************** */
+/* ****************************************** */
+@media  screen and (max-width:768px) {
+  .login-box{
+    padding: 60px 10px;
+  }
+}
+@media screen and (max-width: 575px) {
+  .reg-box .row{
+    flex-direction: column-reverse;
+  }
+  .login-box{
+    padding: 30px 15px;
+  }
+  .contact-form-box h4{
+    margin-bottom: 16px;
+  }
+  .contact-form-box .inputs{
+    margin-top: 20px;
+  }
+  .img-links{
+    display: flex;
+  }
+  .img-links .work-links{
+    width: 100%;
+    padding-left: 20px;
+  }
+  .nav-logout-btn{
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 400px){
+  section.home p{
+    font-size: 14px;
+  }
+  section.home h2{
+    font-size: 20px;
+  }
+}

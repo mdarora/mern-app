@@ -1,0 +1,41 @@
+.contact-info-box{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #fff;
+    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
+    
+    figure{
+      margin-right: 16px;
+      margin-bottom: 0;
+      text-align: center;
+      
+      i{
+        color: var(--theme-color);
+        font-size: 24px;
+        line-height: 100%;
+      }
+    }
+    h6{
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+    p {
+      font-size: 12px;
+      margin-bottom: 0;
+    }
+  }
+  
+  .contact-form-box{
+    @extend .reg-box;
+  
+    input, textarea{
+      font-size: 12px;
+    }
+    textarea{
+      height: 150px;
+    }
+  }
+  
+  

@@ -9,7 +9,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ErrorPage from "./components/404";
 import Logout from "./components/Logout";
-import "./App.css";
+import "./App.scss";
 
 const App = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
