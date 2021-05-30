@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ErrorPage from "./components/404";
 import Logout from "./components/Logout";
+import VerifyOtp from "./components/VerifyOtp";
 import "./App.scss";
 
 const App = () => {
@@ -49,6 +50,10 @@ const App = () => {
 
       <Route path="/logout">
         <Logout setIsLoggedin={setIsLoggedin}></Logout>
+      </Route>
+
+      <Route path="/otpverification">
+        <VerifyOtp setIsLoggedin={setIsLoggedin}></VerifyOtp>
       </Route>
 
       <Route>

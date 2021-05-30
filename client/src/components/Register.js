@@ -45,7 +45,7 @@ const Register = ({isLoggedin}) => {
                 document.getElementById("result-msg").classList.add("text-success");
                 document.getElementById("result-msg").classList.remove("text-danger");
                 setTimeout(() =>{
-                    history.push("/login");
+                    history.push("/otpverification");
                 }, 2000);
             } else {
                 registerLoader.hidden = true;
@@ -53,8 +53,6 @@ const Register = ({isLoggedin}) => {
                 document.getElementById("result-msg").classList.remove("text-success");
                 document.getElementById("result-msg").classList.add("text-danger");
             }
-            console.log("Result", result);
-            
         } catch (error) {
             registerLoader.hidden = true;
             setresultMsg("Something went wrong !");
@@ -102,7 +100,7 @@ const Register = ({isLoggedin}) => {
                                     </p>
 
                                     <div className="form-btn">
-                                        <button type="submit">Register</button>
+                                        <button type="submit">Get OTP</button>
                                     </div>
                                 </form>
                             </div>

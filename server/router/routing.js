@@ -3,10 +3,56 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleWare/auth");
+const nodemailer = require("nodemailer");
 
 require("../db/dbConn");
 const User = require("../db/models/userSchema");
 const Message = require("../db/models/messegesSchema");
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.MAIL,
+    pass: process.env.MAIL_PASS
+  }
+});
+
+let regUser = {};
+let generatedOTP;
+
+const otpViaMail = (email) => {
+    const sendOtp = new Promise((resolve, reject) =>{
+        const opt = Math.floor(Math.random() * 1000000);
+
+        const mailOptions = {
+            from: process.env.MAIL,
+            to: email,
+            subject: 'Verification code for Mern App',
+            text: `Your One Time Password (OTP) for Mern App is ${opt}`
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+            console.log(error);
+            reject({error : "OTP sending failed"});
+            } else {
+            console.log('Email sent: ' + info.response);
+            resolve(opt);
+            }
+        });
+    });
+
+    return sendOtp;
+}
+
+
+router.get("/", async (req, res) =>{
+
+    
+    
+    res.send("home route of server");
+});
+
 
 router.get("/about", auth, async (req, res) => {
     try {
@@ -29,6 +75,9 @@ router.get("/getdata", auth, async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
+
+    
+
     try {
         const {name, email, phone, gender, work, password, cpassword} = req.body;
         
@@ -47,23 +96,56 @@ router.post("/register", async (req, res) => {
         if (findByPhone){
             return res.status(422).json({error : "Phone number already registered"});
         }
-        const hashedPassword = await bcrypt.hash(password, 12);
-        const hashedcPassword = await bcrypt.hash(cpassword, 12);
+
+        regUser = {name, email, phone, gender, work, password, cpassword};
+
+        
+    
+        generatedOTP = await otpViaMail(email);
+        console.log("generated otp : " + generatedOTP);
+        
+        
+        res.json({message : "OTP sent to your E-mail"});
         
 
-        const newUser = new User({name, email, phone, gender, work,
+    } catch (error) {
+        res.status(400).json({error : "Something went wrong !"});
+        console.log("catched error => ", error);
+    }
+});
+
+router.post("/verifyOtp", async (req, res) =>{
+
+    if (req.body.enteredOtp != generatedOTP) {
+        return res.json({error : "Invalid OTP"});
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(regUser.password, 12);
+        const hashedcPassword = await bcrypt.hash(regUser.cpassword, 12);
+        
+
+        const newUser = new User({
+            name: regUser.name,
+            email: regUser.email,
+            phone: regUser.phone,
+            gender: regUser.gender,
+            work: regUser.work,
             password: hashedPassword,
             cpassword : hashedcPassword
         });
         
         const result = await newUser.save();
         res.status(201).json({ message : "Registered successfully"});
-
     } catch (error) {
-        res.status(400).send(error);
-        console.log("catched error => ", error);
+        console.log(error);
+        res.status(422).json({error:"something went wrong!"})
     }
+
+    
+
 });
+
 
 router.post("/signin", async (req, res) => {
     try {

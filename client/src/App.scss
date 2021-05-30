@@ -60,6 +60,20 @@ section {
   @extend .register-side-img
 };
 
+.h-100{
+  height: 100%;
+}
+.h-75{
+  height: 75%;
+}
+.h-25{
+  height: 25%;
+}
+.otp-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 /* ****************************************** */
 /* ****************************************** */
 @media  screen and (max-width:768px) {
