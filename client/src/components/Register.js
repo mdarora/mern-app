@@ -4,9 +4,11 @@ import InputField from "./InputField";
 import regSvg from "../images/register.svg";
 import loader from "../images/Spinner-1s-200px.svg";
 
-const Register = () => {
-
+const Register = ({isLoggedin}) => {
     const history = useHistory();
+    if(isLoggedin){
+        history.push("/");
+    }
 
     const [user, setUser] = useState({
         name:"", email:"", phone:"", work:"", gender:"gender", password:"", cpassword:""

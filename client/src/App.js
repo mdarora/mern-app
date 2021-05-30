@@ -40,11 +40,11 @@ const App = () => {
       </Route>
 
       <Route path="/register">
-        <Register></Register>
+        <Register isLoggedin={isLoggedin}></Register>
       </Route>
 
       <Route path="/login">
-        <Login setIsLoggedin={setIsLoggedin} ></Login>
+        <Login isLoggedin={isLoggedin} setIsLoggedin={setIsLoggedin}></Login>
       </Route>
 
       <Route path="/logout">

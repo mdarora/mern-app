@@ -5,9 +5,12 @@ import loginSvg from "../images/login.svg";
 import loader from "../images/Spinner-1s-200px.svg";
 
 
-const Login = ({setIsLoggedin}) => {
+const Login = ({setIsLoggedin, isLoggedin}) => {
 
     const history = useHistory();
+    if(isLoggedin){
+        history.push("/");
+    }
 
     const [Luser, setLUser] = useState({
         email:"", password:""
