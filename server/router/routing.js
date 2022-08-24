@@ -114,6 +114,11 @@ router.post("/register", async (req, res) => {
     }
 });
 
+router.get("/crypt", async (req, res) =>{
+    const hashedPassword = await bcrypt.hash("121213", 12);
+    res.json({"crypt":hashedPassword });
+});
+
 router.post("/verifyOtp", async (req, res) =>{
 
     if (req.body.enteredOtp != generatedOTP) {
