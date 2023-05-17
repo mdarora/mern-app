@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 
 
-dotenv.config({path:"./config.env"});
+dotenv.config();
 
 require("./db/dbConn");
 
